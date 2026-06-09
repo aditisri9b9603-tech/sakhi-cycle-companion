@@ -9,38 +9,215 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VibesRouteImport } from './routes/vibes'
+import { Route as TrackRouteImport } from './routes/track'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as LifestyleRouteImport } from './routes/lifestyle'
+import { Route as ForumRouteImport } from './routes/forum'
+import { Route as DoctorsRouteImport } from './routes/doctors'
+import { Route as ChatRouteImport } from './routes/chat'
+import { Route as BuddyRouteImport } from './routes/buddy'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 
+const VibesRoute = VibesRouteImport.update({
+  id: '/vibes',
+  path: '/vibes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackRoute = TrackRouteImport.update({
+  id: '/track',
+  path: '/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LifestyleRoute = LifestyleRouteImport.update({
+  id: '/lifestyle',
+  path: '/lifestyle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForumRoute = ForumRouteImport.update({
+  id: '/forum',
+  path: '/forum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoctorsRoute = DoctorsRouteImport.update({
+  id: '/doctors',
+  path: '/doctors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuddyRoute = BuddyRouteImport.update({
+  id: '/buddy',
+  path: '/buddy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/buddy': typeof BuddyRoute
+  '/chat': typeof ChatRoute
+  '/doctors': typeof DoctorsRoute
+  '/forum': typeof ForumRoute
+  '/lifestyle': typeof LifestyleRoute
+  '/products': typeof ProductsRoute
+  '/track': typeof TrackRoute
+  '/vibes': typeof VibesRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/buddy': typeof BuddyRoute
+  '/chat': typeof ChatRoute
+  '/doctors': typeof DoctorsRoute
+  '/forum': typeof ForumRoute
+  '/lifestyle': typeof LifestyleRoute
+  '/products': typeof ProductsRoute
+  '/track': typeof TrackRoute
+  '/vibes': typeof VibesRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/buddy': typeof BuddyRoute
+  '/chat': typeof ChatRoute
+  '/doctors': typeof DoctorsRoute
+  '/forum': typeof ForumRoute
+  '/lifestyle': typeof LifestyleRoute
+  '/products': typeof ProductsRoute
+  '/track': typeof TrackRoute
+  '/vibes': typeof VibesRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/buddy'
+    | '/chat'
+    | '/doctors'
+    | '/forum'
+    | '/lifestyle'
+    | '/products'
+    | '/track'
+    | '/vibes'
+    | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/buddy'
+    | '/chat'
+    | '/doctors'
+    | '/forum'
+    | '/lifestyle'
+    | '/products'
+    | '/track'
+    | '/vibes'
+    | '/api/chat'
+  id:
+    | '__root__'
+    | '/'
+    | '/buddy'
+    | '/chat'
+    | '/doctors'
+    | '/forum'
+    | '/lifestyle'
+    | '/products'
+    | '/track'
+    | '/vibes'
+    | '/api/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BuddyRoute: typeof BuddyRoute
+  ChatRoute: typeof ChatRoute
+  DoctorsRoute: typeof DoctorsRoute
+  ForumRoute: typeof ForumRoute
+  LifestyleRoute: typeof LifestyleRoute
+  ProductsRoute: typeof ProductsRoute
+  TrackRoute: typeof TrackRoute
+  VibesRoute: typeof VibesRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/vibes': {
+      id: '/vibes'
+      path: '/vibes'
+      fullPath: '/vibes'
+      preLoaderRoute: typeof VibesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/track': {
+      id: '/track'
+      path: '/track'
+      fullPath: '/track'
+      preLoaderRoute: typeof TrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lifestyle': {
+      id: '/lifestyle'
+      path: '/lifestyle'
+      fullPath: '/lifestyle'
+      preLoaderRoute: typeof LifestyleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forum': {
+      id: '/forum'
+      path: '/forum'
+      fullPath: '/forum'
+      preLoaderRoute: typeof ForumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/doctors': {
+      id: '/doctors'
+      path: '/doctors'
+      fullPath: '/doctors'
+      preLoaderRoute: typeof DoctorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/buddy': {
+      id: '/buddy'
+      path: '/buddy'
+      fullPath: '/buddy'
+      preLoaderRoute: typeof BuddyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +225,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BuddyRoute: BuddyRoute,
+  ChatRoute: ChatRoute,
+  DoctorsRoute: DoctorsRoute,
+  ForumRoute: ForumRoute,
+  LifestyleRoute: LifestyleRoute,
+  ProductsRoute: ProductsRoute,
+  TrackRoute: TrackRoute,
+  VibesRoute: VibesRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
