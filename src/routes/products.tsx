@@ -16,8 +16,8 @@ const PRODUCTS = [
     cons: ["Can feel bulky", "Disposable waste (unless cloth)", "May shift during sport"],
     how: "Peel backing, stick adhesive side to underwear, change every 4–6 hours. Wrap used pad in wrapper and dispose in bin (never flush).",
     videos: [
-      { id: "Yb2sZBVjGNc", title: "How to use a sanitary pad — beginner guide" },
-      { id: "hHEvc4Lrofo", title: "Cloth pads explained" },
+      { id: "kmWbOC8Fbb0", title: "How to use a sanitary pad — quick guide" },
+      { id: "_GnIQTOouHE", title: "Pads 101 — beginner walkthrough" },
     ],
   },
   {
@@ -27,8 +27,8 @@ const PRODUCTS = [
     cons: ["Insertion learning curve", "Must change every 4–8 hours (TSS risk)", "Not for overnight"],
     how: "Wash hands. Relax in a comfortable position. Insert applicator at a slight backward angle, push plunger fully, remove applicator. The string stays outside. Change every 4–8 hours, never over 8.",
     videos: [
-      { id: "OQg-iozkUSY", title: "How to insert a tampon (step by step)" },
-      { id: "ePsZ2nyfNyc", title: "First-time tampon tips" },
+      { id: "Y_QrLhxIBzg", title: "How to insert a tampon — step by step" },
+      { id: "L0vlQHxJ8gE", title: "First-time tampon tips" },
     ],
   },
   {
@@ -38,8 +38,8 @@ const PRODUCTS = [
     cons: ["Initial learning curve", "Need clean hands & sink", "Boil-sterilize between cycles"],
     how: "Fold (C-fold or punch-down), relax pelvic muscles, insert and rotate to create a seal. Empty every 8–12 hours, rinse, reinsert. Sterilize in boiling water between cycles.",
     videos: [
-      { id: "C2tFlgFAvOs", title: "Menstrual cup — folds & insertion" },
-      { id: "POvlqJxx2BU", title: "Removing a menstrual cup without mess" },
+      { id: "Z2HxYZlNlNs", title: "Menstrual cup — folds & insertion" },
+      { id: "yRQqQCnflKQ", title: "How to remove a menstrual cup" },
     ],
   },
   {
@@ -49,7 +49,7 @@ const PRODUCTS = [
     cons: ["Can be tricky to remove", "Higher learning curve"],
     how: "Pinch disc in half, insert and tuck behind the pubic bone. To remove, hook a finger under the rim and tilt out slowly over the toilet.",
     videos: [
-      { id: "T_yLG7tQyU8", title: "How to use a menstrual disc" },
+      { id: "rJ74JBfu_8M", title: "How to use a menstrual disc" },
     ],
   },
   {
@@ -59,7 +59,7 @@ const PRODUCTS = [
     cons: ["Higher upfront cost", "Need a few pairs for the cycle", "Hand-wash recommended"],
     how: "Wear as regular underwear. Rinse in cold water after use, then machine wash on cold and line dry.",
     videos: [
-      { id: "8rs0i6Pq2Cs", title: "Period underwear — honest review" },
+      { id: "F-J1XF4XJjI", title: "Period underwear — honest review" },
     ],
   },
 ];
@@ -115,12 +115,16 @@ function ProductsPage() {
           <div className="aspect-video rounded-2xl overflow-hidden shadow-soft bg-black">
             <iframe
               key={video}
-              src={`https://www.youtube-nocookie.com/embed/${video}?rel=0`}
+              src={`https://www.youtube.com/embed/${video}?rel=0&modestbranding=1`}
               title={`${product.name} tutorial`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen loading="lazy"
+              allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin"
               className="w-full h-full border-0"
             />
+          </div>
+          <div className="mt-2 text-right">
+            <a href={`https://www.youtube.com/watch?v=${video}`} target="_blank" rel="noreferrer"
+              className="text-xs text-primary hover:underline">Open on YouTube ↗</a>
           </div>
           <div className="mt-3 space-y-2">
             {product.videos.map((v) => (
@@ -133,7 +137,7 @@ function ProductsPage() {
               </button>
             ))}
           </div>
-          <div className="px-2 pt-3 text-xs text-muted-foreground">Curated tutorials from YouTube.</div>
+          <div className="px-2 pt-3 text-xs text-muted-foreground">Curated tutorials from YouTube. If a video won't play here, use the "Open on YouTube" link.</div>
         </div>
       </div>
     </AppShell>

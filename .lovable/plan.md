@@ -1,73 +1,53 @@
-## Goal
-Take Sakhi Cycle from "demo-feeling" to "leading femtech app feel": responsive on every screen, prettier 3D UI (same rose/peach theme), and every feature behaves like a working product. Backend stays localStorage per your choice — so cross-device sync is out of scope, but everything will persist reliably on this device.
+# Sakhi Cycle — Polish Pass
 
-## 1. Responsive everywhere
-- Rework `AppShell` nav: top bar on desktop/laptop, collapsing drawer on tablet, bottom tab-bar on mobile (thumb-reach). Active route highlight + safe-area padding for iOS.
-- Audit every page for `grid-cols-[minmax(0,1fr)_auto]`, `min-w-0`, `truncate`, `shrink-0` so headers and chips never clip on 360px screens.
-- Container widths: `max-w-6xl` on desktop, full-bleed on mobile with `px-4`. Cards collapse to single column under `sm:`.
-- Touch targets ≥44px, font scales `text-base md:text-lg`, hero illustration scales with `aspect-ratio` not fixed height.
+Theme stays exactly the same (rose/peach glass + warm gradients). Only additive UI polish + the four feature fixes below. No new dependencies, no backend.
 
-## 2. UI polish (same rose/peach theme, more 3D)
-- Add layered radial-gradient blobs behind hero, soft noise texture, and `backdrop-blur` glass cards with inner highlight + outer glow.
-- Buttons get pressed/hover micro-interactions (translate-y + shadow change), phase-aware accent colour, and animated cycle ring on the home dashboard (SVG conic gradient that fills with `cyclePercent`).
-- New animated phase orb on the dashboard (CSS 3D transform, breathes + tilts on hover).
-- Replace flat emojis where it improves polish with subtly tinted icon chips; keep emojis where warmth matters.
+## 1. Home dashboard — full 3D, responsive, with CycleRing
 
-## 3. Cycle tracker, symptoms & mood — robust local system
-Still localStorage, but treated like a proper data layer:
-- Versioned schema (`sakhi:v2:profile`, `sakhi:v2:logs`) with safe migration from current keys.
-- One log per date, upsert semantics, append-only history, JSON export/import for backup.
-- Richer log: mood (6), energy 1–5, flow, symptoms (multi-select), sleep hours, water cups, notes, sex activity (optional/private).
-- Insights expand: average cycle length (rolling 3-cycle), period regularity score, common symptoms per phase, mood trend sparkline (7/30 day).
-- Calendar heatmap of last 90 days (flow intensity + symptom density), tap a day to edit that day's log.
-- Predictions update from real logged history, not just the initial setup.
+Edit `src/routes/index.tsx`:
+- Replace the flat phase progress bar with the existing `<CycleRing insight={insight} />` placed inside a floating glass card. Show ring on the left, "Today / phase / next period / fertile window" stats on the right in a 2-col grid (`grid-cols-1 md:grid-cols-[260px_1fr]`).
+- Add a floating affirmation chip overlaid on the hero (already partially there) and make it visible on all breakpoints (`block` not `hidden sm:block`).
+- Wrap the dashboard card with `card-3d` + subtle hover `tilt`. Add `animate-float` to a small accent orb behind the ring.
+- Quick-action grid for the 8 feature tiles: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4` so it fills wide desktops and stacks cleanly on phones.
+- Guard: if no profile yet, show a "Set up your cycle" CTA inside the same card so the dashboard never looks empty.
+- Audit text sizes: `text-3xl sm:text-4xl md:text-5xl` on the H1, `text-sm sm:text-base` on body, `min-w-0` + `truncate` on stat rows.
 
-## 4. Sakhi AI chatbot — production-feel
-- Keeps `/api/chat` server route + Lovable AI Gateway (Gemini 3 Flash). Already wired; will tighten error handling (429 → friendly "I need a breather" toast, 402 → "credits exhausted" banner).
-- Streaming tokens with typing indicator, markdown rendering (react-markdown), code/quote styling, copy-message button, regenerate-last-response.
-- **Daily token limit: 20 messages/day per device**, tracked in localStorage (`sakhi:chat:quota` with date key). Visible counter "14 / 20 today" in the composer; sending disabled at 0 with reset-time hint.
-- Conversation persisted to localStorage so reload restores chat. "New chat" button clears.
-- Suggested starter prompts on empty state ("Why am I bloated before my period?", "Best foods for cramps", etc.).
+## 2. Products — fix broken YouTube tutorials
 
-## 5. Products — real YouTube tutorials
-- Curated, verified video IDs for pad, tampon, menstrual cup, period disc, period underwear.
-- Inline YouTube iframe (lazy, `loading="lazy"`, privacy-enhanced `youtube-nocookie.com`) inside each product card with play overlay.
-- Pros/cons, cost-per-year, eco impact, beginner-friendly score per product.
+Some current IDs (e.g. `Yb2sZBVjGNc`, `OQg-iozkUSY`) return "video unavailable". Edit `src/routes/products.tsx`:
+- Replace each product's `videos` array with verified, embeddable public tutorials. For pads, add the user-supplied video first: ID `kmWbOC8Fbb0` (from `https://youtu.be/kmWbOC8Fbb0`) as "How to use a sanitary pad — quick guide".
+- Use neutral, well-known channels (e.g. Sirona, Stayfree, Saalt, DivaCup) and keep 1–2 videos per product.
+- Add a small "Watch on YouTube" link under the player (`https://www.youtube.com/watch?v=<id>`) as a fallback when embedding is blocked.
+- Switch iframe to `https://www.youtube.com/embed/<id>?rel=0` (the standard host is more reliably embeddable than `youtube-nocookie.com` for some uploads).
+- Make the player + thumbnail list responsive: `grid-cols-1 lg:grid-cols-2`, player keeps `aspect-video w-full`.
 
-## 6. Doctors — realistic directory
-- Seed JSON of ~30 gynaecologists across Mumbai, Delhi, Bangalore, Hyderabad, Pune, Chennai, Kolkata (name, clinic, specialty, languages, fee range, rating, hours, "24/7 emergency" flag).
-- Per-card actions that actually work:
-  - `tel:` call button
-  - `https://wa.me/<e164>?text=...` WhatsApp with pre-filled intro
-  - `https://www.google.com/maps/search/?api=1&query=...` open in Maps
-- Filter by city (from profile), language, 24/7 availability, online consult.
-- Clear "directory for guidance — not an emergency line" disclaimer.
+## 3. Vibes — add Bollywood Spotify playlists
 
-## 7. Buddy — pseudonymous chat + optional WhatsApp reveal
-LocalStorage limits real two-way matching, so the buddy is a simulated companion that behaves like a real one:
-- Onboarding: pick vibe + share-WhatsApp toggle (your number stored locally, never sent anywhere).
-- After pairing, an in-app chat opens with the buddy. Replies are generated by the same Sakhi AI under a "you are Petal, a warm cycle buddy in her luteal phase" persona, so it feels like a real human pen-pal.
-- "Reveal my WhatsApp" button generates a `wa.me` link the user can copy to share with a real friend they invite — honest framing, no fake numbers.
-- Re-pair, weekly prompts, streak counter.
+Edit `src/routes/vibes.tsx`:
+- Extend `PLAYLISTS` with 4 verified public Bollywood playlists (Spotify's "Bollywood Butter", "Bollywood Acoustic", "Hot Hits Hindi", "Bollywood Romance") using their `open.spotify.com/embed/playlist/<id>` IDs. Group via a small tab switcher: "For Your Phase" vs "Bollywood".
+- Each playlist stays inside a `card-3d` glass tile, `grid-cols-1 md:grid-cols-2` so phones get one column.
+- Keep existing Affirmations / Breathe / Mood Match tabs untouched.
 
-## 8. Vibes — Spotify integration
-- Curated Spotify playlist embeds per phase (menstrual/follicular/ovulation/luteal) using the official `open.spotify.com/embed/playlist/<id>` iframe — no API key required.
-- Playlist auto-switches to the user's current phase; manual override tabs.
-- Keeps breathing game + daily affirmation with a nicer 3D card.
+## 4. Buddy — fix WhatsApp matching flow
 
-## 9. Mini-games (engagement)
-- Breathing 4-7-8 with animated 3D orb (already partly there, will refine).
-- "Mood garden": each logged day grows a flower in a small SVG garden — fully local, visual reward.
+Edit `src/routes/buddy.tsx`:
+- Bug: pairing always works but the "save WhatsApp" step silently no-ops if the field is empty, and the share link uses the user's own number (which is wrong for "connecting" to the buddy). Fix:
+  - Onboarding form requires a valid `+<country><number>` (regex check) when "Enable WhatsApp connect" is on; show inline error.
+  - Persist number to `sakhi:buddy:wa` and surface it in the sidebar as "Your WhatsApp" with an edit button.
+  - Add a second action **"Open WhatsApp with {buddy.name}"** that opens `https://wa.me/?text=...` (no number = WhatsApp's "share to a contact" picker) pre-filled with: "Hey! I'm your Sakhi Cycle buddy ({buddy.name} persona). Want to check in this week? 🌷". This is the realistic flow given no real matchmaking backend.
+  - Keep the existing "Copy invite link" (uses the user's saved number) so a real friend can be invited.
+  - Add a tiny "How matching works" disclosure so users understand the in-app chat is an AI persona and the WhatsApp button is for inviting a real friend.
+- Visual: chat card gets `card-3d`, message bubbles get `shadow-soft` + slight `backdrop-blur`, sidebar cards float with `animate-float` (very subtle, staggered delays).
 
-## 10. Tech notes
-- Stays on TanStack Start + localStorage; no Lovable Cloud, no auth.
-- `react-markdown` added for chat rendering.
-- All AI calls go through existing `/api/chat` server route using `LOVABLE_API_KEY` (already configured).
-- No new env vars, no external API keys needed from you.
+## 5. Cross-cutting glassy/floaty polish (theme unchanged)
 
-## Out of scope (your choices)
-- Cross-device sync, real user accounts, server-side persistence.
-- Real-time matching with real strangers (would need backend + moderation).
-- Live Google Places doctor search.
+- Promote remaining `glass` cards on Home / Vibes / Buddy / Products to `card-3d` where appropriate.
+- Add `hover:-translate-y-1 transition-all` to clickable cards.
+- Ensure every page wraps headers in `grid-cols-[minmax(0,1fr)_auto]` pattern so 360px screens never clip.
 
-Once you approve, I'll implement in this order: responsive shell → tracker upgrade → chat polish + quota → doctors/products/buddy/vibes → UI 3D pass.
+## Out of scope
+- Real buddy matchmaking backend (still localStorage, by your earlier choice).
+- Theme / color changes.
+- New routes or new dependencies.
+
+Approve and I'll implement in one pass.

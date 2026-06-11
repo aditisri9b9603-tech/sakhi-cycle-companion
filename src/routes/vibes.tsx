@@ -9,57 +9,75 @@ export const Route = createFileRoute("/vibes")({
   component: VibesPage,
 });
 
-const PLAYLISTS = [
+const PHASE_PLAYLISTS = [
   { name: "Soft Period Days", desc: "Warm, slow songs to curl up with.", id: "37i9dQZF1DWZqd5JICZI0u" },
   { name: "Calm Vibes", desc: "Quiet focus and deep rest.", id: "37i9dQZF1DWVV27DiNWxkR" },
   { name: "Feel-Good Pop", desc: "Lift your ovulation energy.", id: "37i9dQZF1DX3rxVfibe1L0" },
   { name: "Lo-Fi Beats", desc: "Cozy background warmth.", id: "37i9dQZF1DWWQRwui0ExPn" },
 ];
 
+const BOLLYWOOD_PLAYLISTS = [
+  { name: "Bollywood Butter", desc: "Smooth, soulful Bollywood for soft days.", id: "37i9dQZF1DX0XUfTFmNBRM" },
+  { name: "Bollywood Acoustic", desc: "Unplugged warmth for slow mornings.", id: "37i9dQZF1DX1i3hvzHpcQV" },
+  { name: "Hot Hits Hindi", desc: "Today's biggest Hindi tracks.", id: "37i9dQZF1DX0XUsuxWHRQd" },
+  { name: "Bollywood Romance", desc: "Cozy love songs for your luteal lounge.", id: "37i9dQZF1DX5q67ZpWyRrZ" },
+];
+
 function VibesPage() {
   const [affirmation, setAffirmation] = useState(affirmationOfDay());
   const [tab, setTab] = useState<"music" | "affirm" | "breathe" | "matcher">("music");
+  const [musicTab, setMusicTab] = useState<"phase" | "bolly">("phase");
+  const playlists = musicTab === "phase" ? PHASE_PLAYLISTS : BOLLYWOOD_PLAYLISTS;
 
   return (
     <AppShell>
-      <h1 className="text-3xl md:text-4xl font-display mb-2">Your daily <span className="gradient-text">vibes</span></h1>
-      <p className="text-muted-foreground mb-6">Music, mantras, and tiny moments of play.</p>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-display mb-2">Your daily <span className="gradient-text">vibes</span></h1>
+      <p className="text-muted-foreground mb-6 text-sm sm:text-base">Music, mantras, and tiny moments of play.</p>
 
       <div className="flex flex-wrap gap-2 mb-6">
         {([["music", "Playlists", Music], ["affirm", "Affirmations", Sparkles], ["breathe", "Breathe", Wind], ["matcher", "Mood Match", Flower2]] as const).map(([k, label, Icon]) => (
-          <button key={k} onClick={() => setTab(k)} className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition ${
+          <button key={k} onClick={() => setTab(k)} className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition btn-3d ${
             tab === k ? "bg-primary text-primary-foreground shadow-soft" : "glass hover:bg-white"
           }`}><Icon className="h-4 w-4" />{label}</button>
         ))}
       </div>
 
       {tab === "music" && (
-        <div className="grid md:grid-cols-2 gap-5">
-          {PLAYLISTS.map((p) => (
-            <div key={p.id} className="glass rounded-3xl p-4">
-              <div className="mb-2">
-                <div className="font-display text-lg">{p.name}</div>
-                <div className="text-xs text-muted-foreground">{p.desc}</div>
+        <>
+          <div className="inline-flex gap-1 p-1 rounded-full glass mb-5">
+            {([["phase", "For Your Phase"], ["bolly", "Bollywood"]] as const).map(([k, label]) => (
+              <button key={k} onClick={() => setMusicTab(k)} className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition ${
+                musicTab === k ? "gradient-warm text-white shadow-soft" : "text-foreground/70 hover:text-foreground"
+              }`}>{label}</button>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {playlists.map((p) => (
+              <div key={p.id} className="card-3d rounded-3xl p-4 hover:-translate-y-1 transition-transform">
+                <div className="mb-2 min-w-0">
+                  <div className="font-display text-lg truncate">{p.name}</div>
+                  <div className="text-xs text-muted-foreground">{p.desc}</div>
+                </div>
+                <iframe
+                  src={`https://open.spotify.com/embed/playlist/${p.id}?utm_source=generator&theme=0`}
+                  width="100%" height="352" frameBorder={0}
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy" className="rounded-xl"
+                />
               </div>
-              <iframe
-                src={`https://open.spotify.com/embed/playlist/${p.id}?utm_source=generator&theme=0`}
-                width="100%" height="352" frameBorder={0}
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy" className="rounded-xl"
-              />
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
 
       {tab === "affirm" && (
-        <div className="glass rounded-3xl p-10 text-center max-w-2xl mx-auto">
+        <div className="card-3d rounded-3xl p-8 sm:p-10 text-center max-w-2xl mx-auto">
           <div className="h-16 w-16 mx-auto rounded-full gradient-warm shadow-glow flex items-center justify-center mb-6 animate-breathe">
             <Sparkles className="h-8 w-8 text-white" />
           </div>
-          <p className="font-display text-2xl md:text-3xl leading-snug mb-6">"{affirmation}"</p>
+          <p className="font-display text-xl sm:text-2xl md:text-3xl leading-snug mb-6">"{affirmation}"</p>
           <button onClick={() => setAffirmation(AFFIRMATIONS[Math.floor(Math.random() * AFFIRMATIONS.length)])}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full gradient-warm text-white font-semibold shadow-soft">
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full gradient-warm text-white font-semibold shadow-soft btn-3d">
             <RefreshCw className="h-4 w-4" /> Another one
           </button>
         </div>
@@ -92,7 +110,7 @@ function BreatheGame() {
   const label = phase === "in" ? "Breathe in" : phase === "hold" ? "Hold" : "Breathe out";
 
   return (
-    <div className="glass rounded-3xl p-10 text-center max-w-xl mx-auto">
+    <div className="card-3d rounded-3xl p-8 sm:p-10 text-center max-w-xl mx-auto">
       <div className="font-display text-xl mb-1">4-4-6 Box Breath</div>
       <p className="text-muted-foreground text-sm mb-8">A calming rhythm for cramps, anxiety and overwhelm.</p>
       <div className="relative h-64 flex items-center justify-center">
@@ -126,12 +144,12 @@ function MoodMatch() {
   const [picked, setPicked] = useState<typeof MOOD_PROMPTS[number] | null>(null);
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="glass rounded-3xl p-8">
+      <div className="card-3d rounded-3xl p-6 sm:p-8">
         <div className="font-display text-xl mb-1 text-center">How do you feel right now?</div>
         <p className="text-muted-foreground text-sm text-center mb-6">Tap a mood — Sakhi will suggest one tiny act of care.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {MOOD_PROMPTS.map((m) => (
-            <button key={m.mood} onClick={() => setPicked(m)} className={`p-4 rounded-2xl transition ${
+            <button key={m.mood} onClick={() => setPicked(m)} className={`p-4 rounded-2xl transition btn-3d ${
               picked?.mood === m.mood ? "gradient-warm text-white shadow-glow" : "glass hover:bg-white"
             }`}>
               <div className="font-display text-lg">{m.mood}</div>
@@ -139,7 +157,7 @@ function MoodMatch() {
           ))}
         </div>
         {picked && (
-          <div className="mt-6 p-5 rounded-2xl gradient-warm text-white shadow-glow text-center">
+          <div className="mt-6 p-5 rounded-2xl gradient-warm text-white shadow-glow text-center animate-breathe">
             <Sparkles className="h-5 w-5 mx-auto mb-2" />
             <p className="text-base leading-relaxed">{picked.suggestion}</p>
           </div>
