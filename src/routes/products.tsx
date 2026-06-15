@@ -27,8 +27,8 @@ const PRODUCTS = [
     cons: ["Insertion learning curve", "Must change every 4–8 hours (TSS risk)", "Not for overnight"],
     how: "Wash hands. Relax in a comfortable position. Insert applicator at a slight backward angle, push plunger fully, remove applicator. The string stays outside. Change every 4–8 hours, never over 8.",
     videos: [
-      { id: "Y_QrLhxIBzg", title: "How to insert a tampon — step by step" },
-      { id: "L0vlQHxJ8gE", title: "First-time tampon tips" },
+      { id: "kmWbOC8Fbb0", title: "How to use a tampon (beginner guide)" },
+      { id: "_GnIQTOouHE", title: "Tampon insertion — first time tips" },
     ],
   },
   {

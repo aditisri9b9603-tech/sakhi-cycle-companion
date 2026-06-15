@@ -32,7 +32,9 @@ function Home() {
   return (
     <AppShell>
       <section className="relative overflow-hidden rounded-3xl card-3d p-5 sm:p-8 md:p-10 mb-6 md:mb-8">
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-center">
+        <div aria-hidden className="bloom-orb gradient-warm h-72 w-72 -top-20 -left-16 animate-float" />
+        <div aria-hidden className="bloom-orb h-56 w-56 -bottom-16 -right-10 animate-float" style={{ background: "var(--gradient-warm)", animationDelay: "2s" }} />
+        <div className="relative grid md:grid-cols-2 gap-6 md:gap-8 items-center">
           <div className="min-w-0">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
               <Sparkles className="h-3.5 w-3.5" /> Hello {profile?.nickname ?? "beautiful"}
@@ -103,6 +105,7 @@ function Home() {
           { to: "/vibes", icon: Music, title: "Good Vibes", desc: "Music, affirmations, play." },
         ].map((card) => (
           <Link key={card.to} to={card.to} className="group card-3d rounded-2xl p-5 hover:shadow-glow hover:-translate-y-1 transition-all min-w-0">
+
             <div className="h-11 w-11 rounded-xl gradient-warm flex items-center justify-center text-white shadow-soft mb-3 group-hover:scale-110 transition">
               <card.icon className="h-5 w-5" />
             </div>
