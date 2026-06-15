@@ -103,8 +103,9 @@ function Home() {
           { to: "/forum", icon: Users, title: "Anonymous Forum", desc: "Share — no names." },
           { to: "/buddy", icon: Heart, title: "Buddy System", desc: "A cycle pen-pal." },
           { to: "/vibes", icon: Music, title: "Good Vibes", desc: "Music, affirmations, play." },
-        ].map((card, i) => (
-          <Link key={card.to} to={card.to} style={{ animationDelay: `${(i % 4) * 0.6}s` }} className="group card-3d rounded-2xl p-5 hover:shadow-glow hover:-translate-y-1 transition-all min-w-0 animate-float">
+        ].map((card) => (
+          <Link key={card.to} to={card.to} className="group card-3d rounded-2xl p-5 hover:shadow-glow hover:-translate-y-1 transition-all min-w-0">
+
             <div className="h-11 w-11 rounded-xl gradient-warm flex items-center justify-center text-white shadow-soft mb-3 group-hover:scale-110 transition">
               <card.icon className="h-5 w-5" />
             </div>
