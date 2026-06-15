@@ -111,7 +111,7 @@ function ProductsPage() {
           </div>
         </div>
 
-        <div className="card-3d rounded-3xl p-4">
+        <div className="card-3d rounded-3xl p-4 animate-float" style={{ animationDelay: "1s" }}>
           <div className="aspect-video rounded-2xl overflow-hidden shadow-soft bg-black">
             <iframe
               key={video}
