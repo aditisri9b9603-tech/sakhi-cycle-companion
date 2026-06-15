@@ -1,11 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Activity, Heart, MessageCircle, Users, UserRound, Sparkles, Apple, Play, Stethoscope, Music, Menu, X } from "lucide-react";
+import { Activity, Heart, MessageCircle, Users, UserRound, Sparkles, Apple, Play, Stethoscope, Music, Menu, X, Flower2 } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { Splash } from "@/components/Splash";
+import { SakhiCompanion } from "@/components/SakhiCompanion";
 
 const NAV = [
   { to: "/", label: "Home", icon: Heart },
   { to: "/track", label: "Cycle", icon: Activity },
   { to: "/chat", label: "Sakhi AI", icon: MessageCircle },
+  { to: "/garden", label: "Garden", icon: Flower2 },
   { to: "/lifestyle", label: "Lifestyle", icon: Apple },
   { to: "/products", label: "Products", icon: Play },
   { to: "/doctors", label: "Doctors", icon: Stethoscope },
@@ -14,7 +17,7 @@ const NAV = [
   { to: "/vibes", label: "Vibes", icon: Music },
 ] as const;
 
-const BOTTOM_PRIMARY = NAV.filter((n) => ["/", "/track", "/chat", "/buddy"].includes(n.to));
+const BOTTOM_PRIMARY = NAV.filter((n) => ["/", "/track", "/garden", "/chat"].includes(n.to));
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -22,6 +25,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="relative min-h-screen">
+      <Splash />
+      <div aria-hidden className="fixed inset-0 starfield pointer-events-none opacity-60" />
       <div className="bloom-orb animate-float" style={{ width: 380, height: 380, top: -60, left: -80, background: "oklch(0.85 0.12 30)" }} />
       <div className="bloom-orb animate-float" style={{ width: 420, height: 420, top: 200, right: -100, background: "oklch(0.82 0.13 350)", animationDelay: "2s" }} />
       <div className="bloom-orb animate-float" style={{ width: 300, height: 300, bottom: 0, left: "30%", background: "oklch(0.86 0.1 60)", animationDelay: "4s" }} />
@@ -109,6 +114,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
         </div>
       </nav>
+      <SakhiCompanion />
     </div>
   );
 }
