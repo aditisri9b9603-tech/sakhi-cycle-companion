@@ -13,6 +13,7 @@ import { Route as VibesRouteImport } from './routes/vibes'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as LifestyleRouteImport } from './routes/lifestyle'
+import { Route as GardenRouteImport } from './routes/garden'
 import { Route as ForumRouteImport } from './routes/forum'
 import { Route as DoctorsRouteImport } from './routes/doctors'
 import { Route as ChatRouteImport } from './routes/chat'
@@ -38,6 +39,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const LifestyleRoute = LifestyleRouteImport.update({
   id: '/lifestyle',
   path: '/lifestyle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GardenRoute = GardenRouteImport.update({
+  id: '/garden',
+  path: '/garden',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForumRoute = ForumRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof ChatRoute
   '/doctors': typeof DoctorsRoute
   '/forum': typeof ForumRoute
+  '/garden': typeof GardenRoute
   '/lifestyle': typeof LifestyleRoute
   '/products': typeof ProductsRoute
   '/track': typeof TrackRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/chat': typeof ChatRoute
   '/doctors': typeof DoctorsRoute
   '/forum': typeof ForumRoute
+  '/garden': typeof GardenRoute
   '/lifestyle': typeof LifestyleRoute
   '/products': typeof ProductsRoute
   '/track': typeof TrackRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/doctors': typeof DoctorsRoute
   '/forum': typeof ForumRoute
+  '/garden': typeof GardenRoute
   '/lifestyle': typeof LifestyleRoute
   '/products': typeof ProductsRoute
   '/track': typeof TrackRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/doctors'
     | '/forum'
+    | '/garden'
     | '/lifestyle'
     | '/products'
     | '/track'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/doctors'
     | '/forum'
+    | '/garden'
     | '/lifestyle'
     | '/products'
     | '/track'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/doctors'
     | '/forum'
+    | '/garden'
     | '/lifestyle'
     | '/products'
     | '/track'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   DoctorsRoute: typeof DoctorsRoute
   ForumRoute: typeof ForumRoute
+  GardenRoute: typeof GardenRoute
   LifestyleRoute: typeof LifestyleRoute
   ProductsRoute: typeof ProductsRoute
   TrackRoute: typeof TrackRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/lifestyle'
       fullPath: '/lifestyle'
       preLoaderRoute: typeof LifestyleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/garden': {
+      id: '/garden'
+      path: '/garden'
+      fullPath: '/garden'
+      preLoaderRoute: typeof GardenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forum': {
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChatRoute: ChatRoute,
   DoctorsRoute: DoctorsRoute,
   ForumRoute: ForumRoute,
+  GardenRoute: GardenRoute,
   LifestyleRoute: LifestyleRoute,
   ProductsRoute: ProductsRoute,
   TrackRoute: TrackRoute,
