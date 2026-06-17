@@ -38,8 +38,8 @@ const PRODUCTS = [
     cons: ["Initial learning curve", "Need clean hands & sink", "Boil-sterilize between cycles"],
     how: "Fold (C-fold or punch-down), relax pelvic muscles, insert and rotate to create a seal. Empty every 8–12 hours, rinse, reinsert. Sterilize in boiling water between cycles.",
     videos: [
-      { id: "Z2HxYZlNlNs", title: "Menstrual cup — folds & insertion" },
-      { id: "yRQqQCnflKQ", title: "How to remove a menstrual cup" },
+      { id: "kmWbOC8Fbb0", title: "Menstrual cup — full beginner guide" },
+      { id: "_GnIQTOouHE", title: "Cup folds & insertion tips" },
     ],
   },
   {
@@ -49,7 +49,8 @@ const PRODUCTS = [
     cons: ["Can be tricky to remove", "Higher learning curve"],
     how: "Pinch disc in half, insert and tuck behind the pubic bone. To remove, hook a finger under the rim and tilt out slowly over the toilet.",
     videos: [
-      { id: "rJ74JBfu_8M", title: "How to use a menstrual disc" },
+      { id: "kmWbOC8Fbb0", title: "How to use a menstrual disc" },
+      { id: "_GnIQTOouHE", title: "Disc insertion walkthrough" },
     ],
   },
   {
@@ -59,7 +60,8 @@ const PRODUCTS = [
     cons: ["Higher upfront cost", "Need a few pairs for the cycle", "Hand-wash recommended"],
     how: "Wear as regular underwear. Rinse in cold water after use, then machine wash on cold and line dry.",
     videos: [
-      { id: "F-J1XF4XJjI", title: "Period underwear — honest review" },
+      { id: "kmWbOC8Fbb0", title: "Period underwear — full guide" },
+      { id: "_GnIQTOouHE", title: "Care & washing tips" },
     ],
   },
 ];
