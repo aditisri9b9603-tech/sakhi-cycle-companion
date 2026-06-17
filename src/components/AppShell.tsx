@@ -1,14 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Activity, Heart, MessageCircle, Users, UserRound, Sparkles, Apple, Play, Stethoscope, Music, Menu, X, Flower2 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { Activity, Heart, MessageCircle, Users, UserRound, Sparkles, Apple, Play, Stethoscope, Music, Menu, X, LogIn, LogOut } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Splash } from "@/components/Splash";
 import { SakhiCompanion } from "@/components/SakhiCompanion";
+import { supabase } from "@/integrations/supabase/client";
 
 const NAV = [
   { to: "/", label: "Home", icon: Heart },
   { to: "/track", label: "Cycle", icon: Activity },
   { to: "/chat", label: "Sakhi AI", icon: MessageCircle },
-  { to: "/garden", label: "Garden", icon: Flower2 },
   { to: "/lifestyle", label: "Lifestyle", icon: Apple },
   { to: "/products", label: "Products", icon: Play },
   { to: "/doctors", label: "Doctors", icon: Stethoscope },
@@ -17,11 +17,25 @@ const NAV = [
   { to: "/vibes", label: "Vibes", icon: Music },
 ] as const;
 
-const BOTTOM_PRIMARY = NAV.filter((n) => ["/", "/track", "/garden", "/chat"].includes(n.to));
+const BOTTOM_PRIMARY = NAV.filter((n) => ["/", "/track", "/chat", "/forum"].includes(n.to));
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [menuOpen, setMenuOpen] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setEmail(data.session?.user?.email ?? null));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      setEmail(session?.user?.email ?? null);
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  async function signOut() {
+    await supabase.auth.signOut();
+  }
+
 
   return (
     <div className="relative min-h-screen">
@@ -64,9 +78,20 @@ export function AppShell({ children }: { children: ReactNode }) {
             })}
           </nav>
 
-          <button onClick={() => setMenuOpen(true)} className="lg:hidden h-10 w-10 shrink-0 rounded-full glass flex items-center justify-center" aria-label="Open menu">
-            <Menu className="h-5 w-5" />
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            {email ? (
+              <button onClick={signOut} title={email} className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full glass text-xs font-semibold hover:bg-white transition">
+                <LogOut className="h-3.5 w-3.5" /> Sign out
+              </button>
+            ) : (
+              <Link to="/auth" className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full gradient-warm text-white text-xs font-semibold shadow-soft btn-3d">
+                <LogIn className="h-3.5 w-3.5" /> Sign in
+              </Link>
+            )}
+            <button onClick={() => setMenuOpen(true)} className="lg:hidden h-10 w-10 shrink-0 rounded-full glass flex items-center justify-center" aria-label="Open menu">
+              <Menu className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </header>
 

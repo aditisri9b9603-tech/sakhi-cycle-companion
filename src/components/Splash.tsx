@@ -2,21 +2,22 @@ import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 
 export function Splash() {
-  const [show, setShow] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !sessionStorage.getItem("sakhi.splash.seen");
-  });
+  // Always start hidden to keep server and client markup identical (avoids hydration mismatch).
+  const [show, setShow] = useState(false);
   const [fade, setFade] = useState(false);
 
   useEffect(() => {
-    if (!show) return;
+    try {
+      if (sessionStorage.getItem("sakhi.splash.seen")) return;
+    } catch { return; }
+    setShow(true);
     const t1 = setTimeout(() => setFade(true), 2200);
     const t2 = setTimeout(() => {
-      sessionStorage.setItem("sakhi.splash.seen", "1");
+      try { sessionStorage.setItem("sakhi.splash.seen", "1"); } catch {}
       setShow(false);
     }, 3000);
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, [show]);
+  }, []);
 
   if (!show) return null;
   return (

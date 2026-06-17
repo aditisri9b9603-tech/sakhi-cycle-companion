@@ -25,11 +25,12 @@ const BOLLYWOOD_PLAYLISTS = [
   { name: "Indie India", desc: "Soft indie gems for thinking days.", id: "37i9dQZF1DX5q5UVtnsXcU" },
 ];
 
+// Spotify "This Is" playlists are Spotify-owned and reliably available worldwide.
 const TSWIFT_PLAYLISTS = [
   { name: "This Is Taylor Swift", desc: "Her essentials, all eras.", id: "37i9dQZF1DX5KpP2LN299J" },
-  { name: "Taylor Swift Radio", desc: "Songs in her orbit.", id: "37i9dQZF1E4uKuiC4hVAFQ" },
-  { name: "Folklore & Evermore", desc: "Cozy cardigan-core for cramp days.", id: "37i9dQZF1DX7gIoKXt0gmx" },
-  { name: "1989 (Taylor's Version)", desc: "Pop sparkle for ovulation energy.", id: "37i9dQZF1DWUoY6Ih7vsxr" },
+  { name: "All Taylor's Versions", desc: "Every re-recorded album, in order.", id: "37i9dQZF1DXcAEPiX4inIE" },
+  { name: "Taylor Swift Mix", desc: "Songs that pair perfectly with her sound.", id: "37i9dQZF1EIWFXdmpVgEXM" },
+  { name: "Acoustic Taylor", desc: "Folklore + Evermore cozy cardigan-core.", id: "37i9dQZF1DXcF6B6QPhFDv" },
 ];
 
 function VibesPage() {
