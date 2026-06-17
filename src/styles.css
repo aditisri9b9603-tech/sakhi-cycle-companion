@@ -185,55 +185,6 @@
   }
   .animate-tilt { animation: tilt 6s ease-in-out infinite; transform-style: preserve-3d; }
 
-  @keyframes splash-in {
-    0% { opacity: 0; transform: scale(0.9) translateY(8px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .animate-splash-in { animation: splash-in .8s cubic-bezier(.2,.8,.2,1) both; }
-
-  .starfield {
-    background-image:
-      radial-gradient(1px 1px at 20% 30%, oklch(1 0 0 / 0.8), transparent 60%),
-      radial-gradient(1px 1px at 70% 60%, oklch(1 0 0 / 0.7), transparent 60%),
-      radial-gradient(1.5px 1.5px at 40% 80%, oklch(1 0 0 / 0.9), transparent 60%),
-      radial-gradient(1px 1px at 85% 20%, oklch(1 0 0 / 0.7), transparent 60%),
-      radial-gradient(1px 1px at 10% 70%, oklch(1 0 0 / 0.6), transparent 60%),
-      radial-gradient(1.5px 1.5px at 55% 15%, oklch(1 0 0 / 0.8), transparent 60%);
-    background-size: 600px 600px;
-    animation: twinkle 6s ease-in-out infinite;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.95; }
-  }
-
-  @keyframes petal-fall {
-    0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-  }
-  .petal {
-    position: absolute; top: -10vh;
-    width: 14px; height: 14px;
-    background: radial-gradient(circle at 30% 30%, oklch(0.95 0.06 350), oklch(0.82 0.14 350));
-    border-radius: 80% 0 80% 0;
-    animation: petal-fall linear infinite;
-    opacity: 0.85;
-    filter: drop-shadow(0 2px 4px oklch(0.62 0.16 15 / 0.2));
-  }
-
-  @keyframes firefly {
-    0%, 100% { opacity: 0.2; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-12px); }
-  }
-  .firefly {
-    position: absolute; width: 6px; height: 6px; border-radius: 9999px;
-    background: oklch(0.95 0.15 90);
-    box-shadow: 0 0 12px 3px oklch(0.9 0.18 90 / 0.7);
-    animation: firefly 3s ease-in-out infinite;
-  }
-
-
   .prose-chat p { margin: 0 0 .5rem; }
   .prose-chat p:last-child { margin-bottom: 0; }
   .prose-chat ul, .prose-chat ol { padding-left: 1.2rem; margin: .25rem 0 .5rem; }

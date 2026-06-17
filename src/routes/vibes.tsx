@@ -21,23 +21,13 @@ const BOLLYWOOD_PLAYLISTS = [
   { name: "Bollywood Acoustic", desc: "Unplugged warmth for slow mornings.", id: "37i9dQZF1DX1i3hvzHpcQV" },
   { name: "Hot Hits Hindi", desc: "Today's biggest Hindi tracks.", id: "37i9dQZF1DX0XUsuxWHRQd" },
   { name: "Bollywood Romance", desc: "Cozy love songs for your luteal lounge.", id: "37i9dQZF1DX5q67ZpWyRrZ" },
-  { name: "Bollywood Dance", desc: "Move it out — for high-energy follicular days.", id: "37i9dQZF1DX08jcQJXDnEQ" },
-  { name: "Indie India", desc: "Soft indie gems for thinking days.", id: "37i9dQZF1DX5q5UVtnsXcU" },
-];
-
-// Spotify "This Is" playlists are Spotify-owned and reliably available worldwide.
-const TSWIFT_PLAYLISTS = [
-  { name: "This Is Taylor Swift", desc: "Her essentials, all eras.", id: "37i9dQZF1DX5KpP2LN299J" },
-  { name: "All Taylor's Versions", desc: "Every re-recorded album, in order.", id: "37i9dQZF1DXcAEPiX4inIE" },
-  { name: "Taylor Swift Mix", desc: "Songs that pair perfectly with her sound.", id: "37i9dQZF1EIWFXdmpVgEXM" },
-  { name: "Acoustic Taylor", desc: "Folklore + Evermore cozy cardigan-core.", id: "37i9dQZF1DXcF6B6QPhFDv" },
 ];
 
 function VibesPage() {
   const [affirmation, setAffirmation] = useState(affirmationOfDay());
   const [tab, setTab] = useState<"music" | "affirm" | "breathe" | "matcher">("music");
-  const [musicTab, setMusicTab] = useState<"phase" | "bolly" | "tswift">("phase");
-  const playlists = musicTab === "phase" ? PHASE_PLAYLISTS : musicTab === "bolly" ? BOLLYWOOD_PLAYLISTS : TSWIFT_PLAYLISTS;
+  const [musicTab, setMusicTab] = useState<"phase" | "bolly">("phase");
+  const playlists = musicTab === "phase" ? PHASE_PLAYLISTS : BOLLYWOOD_PLAYLISTS;
 
   return (
     <AppShell>
@@ -54,8 +44,8 @@ function VibesPage() {
 
       {tab === "music" && (
         <>
-          <div className="inline-flex gap-1 p-1 rounded-full glass mb-5 flex-wrap">
-            {([["phase", "For Your Phase"], ["bolly", "Bollywood"], ["tswift", "Taylor Swift"]] as const).map(([k, label]) => (
+          <div className="inline-flex gap-1 p-1 rounded-full glass mb-5">
+            {([["phase", "For Your Phase"], ["bolly", "Bollywood"]] as const).map(([k, label]) => (
               <button key={k} onClick={() => setMusicTab(k)} className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition ${
                 musicTab === k ? "gradient-warm text-white shadow-soft" : "text-foreground/70 hover:text-foreground"
               }`}>{label}</button>

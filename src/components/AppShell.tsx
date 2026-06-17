@@ -1,9 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Activity, Heart, MessageCircle, Users, UserRound, Sparkles, Apple, Play, Stethoscope, Music, Menu, X, LogIn, LogOut } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
-import { Splash } from "@/components/Splash";
-import { SakhiCompanion } from "@/components/SakhiCompanion";
-import { supabase } from "@/integrations/supabase/client";
+import { Activity, Heart, MessageCircle, Users, UserRound, Sparkles, Apple, Play, Stethoscope, Music, Menu, X } from "lucide-react";
+import { useState, type ReactNode } from "react";
 
 const NAV = [
   { to: "/", label: "Home", icon: Heart },
@@ -17,30 +14,14 @@ const NAV = [
   { to: "/vibes", label: "Vibes", icon: Music },
 ] as const;
 
-const BOTTOM_PRIMARY = NAV.filter((n) => ["/", "/track", "/chat", "/forum"].includes(n.to));
+const BOTTOM_PRIMARY = NAV.filter((n) => ["/", "/track", "/chat", "/buddy"].includes(n.to));
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [menuOpen, setMenuOpen] = useState(false);
-  const [email, setEmail] = useState<string | null>(null);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setEmail(data.session?.user?.email ?? null));
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setEmail(session?.user?.email ?? null);
-    });
-    return () => sub.subscription.unsubscribe();
-  }, []);
-
-  async function signOut() {
-    await supabase.auth.signOut();
-  }
-
 
   return (
     <div className="relative min-h-screen">
-      <Splash />
-      <div aria-hidden className="fixed inset-0 starfield pointer-events-none opacity-60" />
       <div className="bloom-orb animate-float" style={{ width: 380, height: 380, top: -60, left: -80, background: "oklch(0.85 0.12 30)" }} />
       <div className="bloom-orb animate-float" style={{ width: 420, height: 420, top: 200, right: -100, background: "oklch(0.82 0.13 350)", animationDelay: "2s" }} />
       <div className="bloom-orb animate-float" style={{ width: 300, height: 300, bottom: 0, left: "30%", background: "oklch(0.86 0.1 60)", animationDelay: "4s" }} />
@@ -78,20 +59,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             })}
           </nav>
 
-          <div className="flex items-center gap-2 shrink-0">
-            {email ? (
-              <button onClick={signOut} title={email} className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full glass text-xs font-semibold hover:bg-white transition">
-                <LogOut className="h-3.5 w-3.5" /> Sign out
-              </button>
-            ) : (
-              <Link to="/auth" className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full gradient-warm text-white text-xs font-semibold shadow-soft btn-3d">
-                <LogIn className="h-3.5 w-3.5" /> Sign in
-              </Link>
-            )}
-            <button onClick={() => setMenuOpen(true)} className="lg:hidden h-10 w-10 shrink-0 rounded-full glass flex items-center justify-center" aria-label="Open menu">
-              <Menu className="h-5 w-5" />
-            </button>
-          </div>
+          <button onClick={() => setMenuOpen(true)} className="lg:hidden h-10 w-10 shrink-0 rounded-full glass flex items-center justify-center" aria-label="Open menu">
+            <Menu className="h-5 w-5" />
+          </button>
         </div>
       </header>
 
@@ -139,7 +109,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
         </div>
       </nav>
-      <SakhiCompanion />
     </div>
   );
 }

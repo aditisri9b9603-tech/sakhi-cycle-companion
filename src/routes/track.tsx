@@ -3,7 +3,7 @@ import { AppShell } from "@/components/AppShell";
 import { useEffect, useMemo, useState } from "react";
 import { computeAnalytics, computeInsights, deleteLog, exportAll, getLogs, getProfile, importAll, saveLog, saveProfile, type CycleProfile, type LogEntry } from "@/lib/cycle";
 import { format, addDays, parseISO, startOfDay, differenceInDays } from "date-fns";
-import { Save, Sparkles, Download, Upload, Trash2, Flame, Droplet, Moon, Activity, Flower2, Trophy } from "lucide-react";
+import { Save, Sparkles, Download, Upload, Trash2, Flame, Droplet, Moon, Activity } from "lucide-react";
 
 export const Route = createFileRoute("/track")({
   head: () => ({ meta: [{ title: "Cycle Tracker — Sakhi Cycle" }, { name: "description", content: "Set up your cycle and log mood, flow, and symptoms with smart insights." }] }),
@@ -225,8 +225,6 @@ function TrackPage() {
         </div>
       </div>
 
-      <Garden logs={logs} />
-
       {toast && (
         <div className="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full gradient-warm text-white text-sm shadow-glow">{toast}</div>
       )}
@@ -329,70 +327,5 @@ function Sparkline({ data }: { data: number[] }) {
       <polyline points={`0,${h} ${pts} ${w},${h}`} fill="url(#sparkGrad)" />
       <polyline points={pts} fill="none" stroke="oklch(0.62 0.18 15)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
-  );
-}
-
-const MOOD_COLORS: Record<string, string> = {
-  happy: "oklch(0.85 0.15 60)", calm: "oklch(0.85 0.1 220)", energetic: "oklch(0.82 0.13 150)",
-  sad: "oklch(0.72 0.08 250)", anxious: "oklch(0.78 0.06 280)", irritable: "oklch(0.7 0.15 20)",
-};
-
-function Garden({ logs }: { logs: LogEntry[] }) {
-  const flowers = logs.slice(0, 60);
-  const dates = new Set(logs.map((l) => l.date));
-  let streak = 0;
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    if (dates.has(d.toISOString().slice(0, 10))) streak++; else break;
-  }
-  const badges = [
-    { unlocked: logs.length >= 1, label: "First Bloom", icon: "🌱" },
-    { unlocked: logs.length >= 7, label: "Week of Care", icon: "🌸" },
-    { unlocked: streak >= 7, label: "7-day Streak", icon: "🔥" },
-    { unlocked: logs.length >= 30, label: "Wellness Tree", icon: "🌳" },
-    { unlocked: logs.length >= 60, label: "Rare Lotus", icon: "🪷" },
-    { unlocked: streak >= 21, label: "Garden Keeper", icon: "🦋" },
-  ];
-  return (
-    <section className="mt-8">
-      <div className="flex items-center gap-2 mb-3">
-        <Flower2 className="h-5 w-5 text-primary" />
-        <h2 className="font-display text-xl sm:text-2xl">Your <span className="gradient-text">Mood Garden</span></h2>
-      </div>
-      <p className="text-muted-foreground text-sm mb-4">Every log plants a flower. Consistency grows a garden.</p>
-      <div className="card-3d rounded-3xl p-5 sm:p-7 relative overflow-hidden min-h-[200px] mb-4">
-        <div className="absolute inset-x-0 bottom-0 h-20" style={{ background: "linear-gradient(to top, oklch(0.85 0.08 140 / 0.5), transparent)" }} />
-        {Array.from({ length: 6 }).map((_, i) => (
-          <span key={i} className="firefly" style={{ left: `${(i * 37) % 100}%`, top: `${20 + (i * 19) % 60}%`, animationDelay: `${i * 0.7}s` }} />
-        ))}
-        {flowers.length === 0 ? (
-          <div className="text-center py-8">
-            <Flower2 className="h-10 w-10 mx-auto mb-2 text-primary animate-breathe" />
-            <p className="text-muted-foreground text-sm">Save your first daily log to plant a flower.</p>
-          </div>
-        ) : (
-          <div className="relative grid grid-cols-8 sm:grid-cols-12 gap-2.5">
-            {flowers.map((l, i) => {
-              const color = MOOD_COLORS[l.mood ?? "calm"] ?? MOOD_COLORS.calm;
-              return <div key={l.date + i} title={`${l.date} · ${l.mood ?? "calm"}`}
-                className="aspect-square rounded-full animate-breathe shadow-soft"
-                style={{ background: `radial-gradient(circle at 30% 30%, white, ${color})`, animationDelay: `${(i % 8) * 0.2}s` }} />;
-            })}
-          </div>
-        )}
-      </div>
-      <div className="flex items-center gap-2 mb-3">
-        <Trophy className="h-4 w-4 text-primary" />
-        <h3 className="font-display text-base">Achievements</h3>
-      </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {badges.map((b) => (
-          <div key={b.label} className={`card-3d rounded-2xl p-3 text-center transition ${b.unlocked ? "" : "opacity-40 grayscale"}`}>
-            <div className="text-2xl mb-1">{b.icon}</div>
-            <div className="text-xs font-display">{b.label}</div>
-          </div>
-        ))}
-      </div>
-    </section>
   );
 }
