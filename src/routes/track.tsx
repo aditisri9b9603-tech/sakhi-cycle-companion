@@ -3,7 +3,7 @@ import { AppShell } from "@/components/AppShell";
 import { useEffect, useMemo, useState } from "react";
 import { computeAnalytics, computeInsights, deleteLog, exportAll, getLogs, getProfile, importAll, saveLog, saveProfile, type CycleProfile, type LogEntry } from "@/lib/cycle";
 import { format, addDays, parseISO, startOfDay, differenceInDays } from "date-fns";
-import { Save, Sparkles, Download, Upload, Trash2, Flame, Droplet, Moon, Activity } from "lucide-react";
+import { Save, Sparkles, Download, Upload, Trash2, Flame, Droplet, Moon, Activity, Flower2, Trophy } from "lucide-react";
 
 export const Route = createFileRoute("/track")({
   head: () => ({ meta: [{ title: "Cycle Tracker — Sakhi Cycle" }, { name: "description", content: "Set up your cycle and log mood, flow, and symptoms with smart insights." }] }),
@@ -224,6 +224,8 @@ function TrackPage() {
           )}
         </div>
       </div>
+
+      <Garden logs={logs} />
 
       {toast && (
         <div className="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full gradient-warm text-white text-sm shadow-glow">{toast}</div>
