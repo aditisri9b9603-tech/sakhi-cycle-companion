@@ -14,7 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          thread: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          thread?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          thread?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cycle_logs: {
+        Row: {
+          energy: number | null
+          flow: string | null
+          id: string
+          log_date: string
+          mood: string | null
+          notes: string | null
+          sleep_hours: number | null
+          symptoms: string[] | null
+          updated_at: string
+          user_id: string
+          water_cups: number | null
+        }
+        Insert: {
+          energy?: number | null
+          flow?: string | null
+          id?: string
+          log_date: string
+          mood?: string | null
+          notes?: string | null
+          sleep_hours?: number | null
+          symptoms?: string[] | null
+          updated_at?: string
+          user_id: string
+          water_cups?: number | null
+        }
+        Update: {
+          energy?: number | null
+          flow?: string | null
+          id?: string
+          log_date?: string
+          mood?: string | null
+          notes?: string | null
+          sleep_hours?: number | null
+          symptoms?: string[] | null
+          updated_at?: string
+          user_id?: string
+          water_cups?: number | null
+        }
+        Relationships: []
+      }
+      forum_posts: {
+        Row: {
+          alias: string
+          body: string
+          created_at: string
+          hearts: number
+          id: string
+          topic: string
+          user_id: string
+        }
+        Insert: {
+          alias: string
+          body: string
+          created_at?: string
+          hearts?: number
+          id?: string
+          topic: string
+          user_id: string
+        }
+        Update: {
+          alias?: string
+          body?: string
+          created_at?: string
+          hearts?: number
+          id?: string
+          topic?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      forum_replies: {
+        Row: {
+          alias: string
+          body: string
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          alias: string
+          body: string
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          alias?: string
+          body?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "forum_replies_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "forum_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
