@@ -38,8 +38,9 @@ const PRODUCTS = [
     cons: ["Initial learning curve", "Need clean hands & sink", "Boil-sterilize between cycles"],
     how: "Fold (C-fold or punch-down), relax pelvic muscles, insert and rotate to create a seal. Empty every 8–12 hours, rinse, reinsert. Sterilize in boiling water between cycles.",
     videos: [
-      { id: "Z2HxYZlNlNs", title: "Menstrual cup — folds & insertion" },
-      { id: "yRQqQCnflKQ", title: "How to remove a menstrual cup" },
+      { id: "o9fPUfm-uYE", title: "How to use a menstrual cup — in-depth guide (AllMatters)" },
+      { id: "nCU7eYkAFrg", title: "Insertion & folds — Lunette Cup" },
+      { id: "bzKGIAOS27U", title: "Insert, remove & clean — Pixie Cup" },
     ],
   },
   {
@@ -49,7 +50,9 @@ const PRODUCTS = [
     cons: ["Can be tricky to remove", "Higher learning curve"],
     how: "Pinch disc in half, insert and tuck behind the pubic bone. To remove, hook a finger under the rim and tilt out slowly over the toilet.",
     videos: [
-      { id: "rJ74JBfu_8M", title: "How to use a menstrual disc" },
+      { id: "v7kG_KwV4NI", title: "How to insert a menstrual disc (Saalt)" },
+      { id: "8OGAPwLQkxE", title: "How to remove a menstrual disc (Saalt)" },
+      { id: "3Fy_CuMQK8I", title: "How to use a menstrual disc (Hello Period)" },
     ],
   },
   {
@@ -59,7 +62,9 @@ const PRODUCTS = [
     cons: ["Higher upfront cost", "Need a few pairs for the cycle", "Hand-wash recommended"],
     how: "Wear as regular underwear. Rinse in cold water after use, then machine wash on cold and line dry.",
     videos: [
-      { id: "F-J1XF4XJjI", title: "Period underwear — honest review" },
+      { id: "HtTe3sfsfB8", title: "How to use period underwear — full guide (AllMatters)" },
+      { id: "JiX8lu6JS2U", title: "How to wash period underwear (Saalt)" },
+      { id: "ygWmgN2XbI4", title: "How period underwear actually works" },
     ],
   },
 ];
