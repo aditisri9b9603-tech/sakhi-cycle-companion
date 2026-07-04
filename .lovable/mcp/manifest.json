@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "sakhi-cycle-mcp",
+      "version": "0.1.0",
+      "title": "Sakhi Cycle MCP"
+    },
+    "tools": [
+      {
+        "name": "get_cycle_phase",
+        "title": "Get cycle phase",
+        "description": "Compute the current menstrual cycle phase, day of cycle, next period date, and fertile window from a last-period-start date and cycle length. Pure computation — no user data is stored.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "lastPeriodStart": {
+              "type": "string",
+              "description": "ISO date (YYYY-MM-DD) of the first day of the most recent period."
+            },
+            "cycleLength": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991,
+              "description": "Average cycle length in days (typical 21-35, default 28)."
+            },
+            "periodLength": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991,
+              "description": "Average period length in days (typical 3-7, default 5)."
+            },
+            "today": {
+              "description": "Optional ISO date to compute for (defaults to today).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "lastPeriodStart",
+            "cycleLength",
+            "periodLength"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "affirmation_of_the_day",
+        "title": "Affirmation of the day",
+        "description": "Return today's Sakhi Cycle affirmation — a short, warm daily message for menstrual wellness.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_period_products",
+        "title": "List period products",
+        "description": "List common menstrual products with pros, cons, and who they suit best. Optionally filter by product id.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Optional product id: pads, tampons, cup, disc, or period-underwear.",
+              "type": "string"
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
