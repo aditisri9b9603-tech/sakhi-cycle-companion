@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { computeAnalytics, computeInsights, deleteLog, exportAll, getLogs, getProfile, importAll, saveLog, saveProfile, type CycleProfile, type LogEntry } from "@/lib/cycle";
 import { format, addDays, parseISO, startOfDay, differenceInDays } from "date-fns";
 import { Save, Sparkles, Download, Upload, Trash2, Flame, Droplet, Moon, Activity } from "lucide-react";
+import { CycleGarden } from "@/components/CycleGarden";
 
 export const Route = createFileRoute("/track")({
   head: () => ({ meta: [{ title: "Cycle Tracker — Sakhi Cycle" }, { name: "description", content: "Set up your cycle and log mood, flow, and symptoms with smart insights." }] }),
@@ -192,6 +193,10 @@ function TrackPage() {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <CycleGarden totalLogs={analytics.totalLogs} streakDays={analytics.streakDays} insight={insight} />
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
