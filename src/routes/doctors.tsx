@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useEffect, useMemo, useState } from "react";
 import { getProfile } from "@/lib/cycle";
-import { Phone, MessageSquare, MapPin, Star, Clock, Search, Languages, Video, ChevronDown, GraduationCap } from "lucide-react";
+import { Phone, MessageSquare, MapPin, Star, Clock, Search, Languages, Video, ChevronDown, GraduationCap, CalendarCheck, Trash2 } from "lucide-react";
+import { BookingPanel } from "@/components/BookingPanel";
+import { cancelAppointment, getAppointments, prettySlot, removeAppointment, type Appointment } from "@/lib/appointments";
 
 export const Route = createFileRoute("/doctors")({
   head: () => ({ meta: [{ title: "24/7 Gynaecologists Near You — Sakhi Cycle" }, { name: "description", content: "Reach a verified gynaecologist any time, from trusted hospitals in your city." }] }),
@@ -76,6 +78,8 @@ function DoctorsPage() {
   const [emergencyOnly, setEmergencyOnly] = useState(false);
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [booking, setBooking] = useState<Doc | null>(null);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
 
   useEffect(() => {
     const p = getProfile();
@@ -83,6 +87,10 @@ function DoctorsPage() {
       const match = CITIES.find((c) => c.toLowerCase() === p.city!.toLowerCase());
       if (match) setCity(match);
     }
+    setAppointments(getAppointments());
+    const sync = () => setAppointments(getAppointments());
+    window.addEventListener("sakhi:appointments", sync);
+    return () => window.removeEventListener("sakhi:appointments", sync);
   }, []);
 
   const filtered = useMemo(() => {
