@@ -180,7 +180,10 @@ function DoctorsPage() {
                   {isOpen ? "Show less" : "Read full bio"} <ChevronDown className={`h-3 w-3 transition ${isOpen ? "rotate-180" : ""}`} />
                 </button>
 
-                <div className="grid grid-cols-3 gap-2 mt-3">
+                <button onClick={() => setBooking(d)} className="w-full mt-3 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-full bg-primary text-primary-foreground text-xs sm:text-sm font-semibold shadow-soft btn-3d">
+                  <CalendarCheck className="h-4 w-4" /> Book appointment
+                </button>
+                <div className="grid grid-cols-3 gap-2 mt-2">
                   <a href={`tel:${tel}`} className="inline-flex items-center justify-center gap-1.5 px-2 py-2 rounded-full gradient-warm text-white text-xs font-semibold shadow-soft btn-3d">
                     <Phone className="h-3.5 w-3.5" /> Call
                   </a>
@@ -197,7 +200,55 @@ function DoctorsPage() {
         })}
       </div>
 
+      <MyRequests items={appointments} />
+
       <p className="text-xs text-muted-foreground mt-6 text-center max-w-xl mx-auto">This is a curated directory for guidance — not an emergency line. For medical emergencies in India, call <strong>112</strong> or your nearest hospital directly.</p>
+
+      {booking && (
+        <BookingPanel doctor={booking} onClose={() => setBooking(null)} onBooked={() => setAppointments(getAppointments())} />
+      )}
     </AppShell>
+  );
+}
+
+function statusOf(a: Appointment): { label: string; cls: string } {
+  if (a.status === "cancelled") return { label: "Cancelled", cls: "bg-secondary text-muted-foreground" };
+  const when = new Date(`${a.date}T${a.slot}:00`);
+  if (when.getTime() < Date.now()) return { label: "Completed", cls: "bg-accent/50 text-foreground" };
+  return { label: "Requested · awaiting clinic", cls: "bg-amber-100 text-amber-800" };
+}
+
+function MyRequests({ items }: { items: Appointment[] }) {
+  return (
+    <section id="my-requests" className="card-3d rounded-3xl p-5 mt-6">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="font-display text-xl inline-flex items-center gap-2"><CalendarCheck className="h-5 w-5 text-primary" /> My requests</h2>
+        <span className="text-xs text-muted-foreground">{items.length} total</span>
+      </div>
+      {items.length === 0 ? (
+        <p className="text-sm text-muted-foreground">No appointment requests yet. Tap “Book appointment” on any doctor to pick a date and time.</p>
+      ) : (
+        <ul className="space-y-2">
+          {items.map((a) => {
+            const s = statusOf(a);
+            return (
+              <li key={a.id} className="glass rounded-2xl p-3 flex flex-wrap items-center gap-3">
+                <div className="flex-1 min-w-[180px]">
+                  <div className="font-semibold text-sm">{a.doctorName}</div>
+                  <div className="text-xs text-muted-foreground">{prettySlot(a.date, a.slot)} · {a.mode === "online" ? "Online" : "In-clinic"} · {a.clinic}</div>
+                  {a.reason && <div className="text-xs text-foreground/70 mt-0.5 line-clamp-1">“{a.reason}”</div>}
+                </div>
+                <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${s.cls}`}>{s.label}</span>
+                {a.status !== "cancelled" && s.label !== "Completed" ? (
+                  <button onClick={() => cancelAppointment(a.id)} className="text-xs px-3 py-1.5 rounded-full glass hover:bg-white">Cancel</button>
+                ) : (
+                  <button onClick={() => removeAppointment(a.id)} aria-label="Remove" className="h-8 w-8 rounded-full glass flex items-center justify-center hover:bg-white"><Trash2 className="h-3.5 w-3.5" /></button>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </section>
   );
 }
