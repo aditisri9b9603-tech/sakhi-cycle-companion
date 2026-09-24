@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { addDays, format, parseISO } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
 import { buildAvailability, prettySlot, saveAppointment, type Appointment } from "@/lib/appointments";
 import { getProfile } from "@/lib/cycle";
 import { CalendarDays, Check, X, Video, Building2, MessageSquare, Phone } from "lucide-react";
@@ -10,7 +12,7 @@ type Props = {
 };
 
 export function BookingPanel({ doctor, onClose, onBooked }: Props) {
-  const days = useMemo(() => buildAvailability(doctor.hours, doctor.phone), [doctor.hours, doctor.phone]);
+  const days = useMemo(() => buildAvailability(doctor.hours, doctor.phone, 31), [doctor.hours, doctor.phone]);
   const firstOpen = days.find((d) => !d.closed) ?? days[0];
   const [date, setDate] = useState(firstOpen.date);
   const [slot, setSlot] = useState<string | null>(null);
@@ -94,21 +96,21 @@ export function BookingPanel({ doctor, onClose, onBooked }: Props) {
         ) : (
           <>
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-2">
-              <CalendarDays className="h-3.5 w-3.5" /> Available in the next 7 days · consults {doctor.hours}
+              <CalendarDays className="h-3.5 w-3.5" /> Next 30 days · consults {doctor.hours} · greyed days are full or closed
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-              {days.map((d) => (
-                <button key={d.date} onClick={() => { setDate(d.date); setSlot(null); }} disabled={d.closed}
-                  className={`shrink-0 w-16 rounded-2xl py-2 text-center transition btn-3d ${
-                    d.date === date ? "gradient-warm text-white shadow-soft" : d.closed ? "bg-secondary/60 text-muted-foreground opacity-60" : "glass hover:bg-white"
-                  }`}>
-                  <div className="text-[10px] uppercase tracking-wider">{d.weekday}</div>
-                  <div className="text-sm font-semibold">{d.label.split(" ")[0]}</div>
-                  <div className="text-[10px]">{d.closed ? "—" : `${d.slots.length} slots`}</div>
-                </button>
-              ))}
+            <div className="glass rounded-2xl flex justify-center">
+              <Calendar
+                mode="single"
+                selected={parseISO(date)}
+                onSelect={(d) => { if (d) { setDate(format(d, "yyyy-MM-dd")); setSlot(null); } }}
+                disabled={(d) => { const k = format(d, "yyyy-MM-dd"); const x = days.find((y) => y.date === k); return !x || x.closed; }}
+                startMonth={new Date()}
+                endMonth={addDays(new Date(), 30)}
+                className="p-3 pointer-events-auto bg-transparent"
+              />
             </div>
+            <div className="text-xs font-medium mt-2">{format(parseISO(date), "EEEE, d MMMM")} · {day.slots.length} slots open</div>
 
             <div className="mt-3">
               {day.closed ? (
