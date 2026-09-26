@@ -18,9 +18,12 @@ import { Route as ForumRouteImport } from './routes/forum'
 import { Route as DoctorsRouteImport } from './routes/doctors'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as BuddyRouteImport } from './routes/buddy'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TutorialsSlugRouteImport } from './routes/tutorials.$slug'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AuthenticatedClinicRouteImport } from './routes/_authenticated/clinic'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
@@ -70,6 +73,15 @@ const BuddyRoute = BuddyRouteImport.update({
   path: '/buddy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -84,6 +96,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedClinicRoute = AuthenticatedClinicRouteImport.update({
+  id: '/clinic',
+  path: '/clinic',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
@@ -106,6 +123,7 @@ const Char91DotmcpChar93InvokeToolToolRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/buddy': typeof BuddyRoute
   '/chat': typeof ChatRoute
   '/doctors': typeof DoctorsRoute
@@ -117,12 +135,14 @@ export interface FileRoutesByFullPath {
   '/vibes': typeof VibesRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/clinic': typeof AuthenticatedClinicRoute
   '/api/chat': typeof ApiChatRoute
   '/tutorials/$slug': typeof TutorialsSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/buddy': typeof BuddyRoute
   '/chat': typeof ChatRoute
   '/doctors': typeof DoctorsRoute
@@ -134,6 +154,7 @@ export interface FileRoutesByTo {
   '/vibes': typeof VibesRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/clinic': typeof AuthenticatedClinicRoute
   '/api/chat': typeof ApiChatRoute
   '/tutorials/$slug': typeof TutorialsSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -141,6 +162,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/buddy': typeof BuddyRoute
   '/chat': typeof ChatRoute
   '/doctors': typeof DoctorsRoute
@@ -152,6 +175,7 @@ export interface FileRoutesById {
   '/vibes': typeof VibesRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/_authenticated/clinic': typeof AuthenticatedClinicRoute
   '/api/chat': typeof ApiChatRoute
   '/tutorials/$slug': typeof TutorialsSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -160,6 +184,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/buddy'
     | '/chat'
     | '/doctors'
@@ -171,12 +196,14 @@ export interface FileRouteTypes {
     | '/vibes'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/clinic'
     | '/api/chat'
     | '/tutorials/$slug'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/buddy'
     | '/chat'
     | '/doctors'
@@ -188,12 +215,15 @@ export interface FileRouteTypes {
     | '/vibes'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/clinic'
     | '/api/chat'
     | '/tutorials/$slug'
     | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/auth'
     | '/buddy'
     | '/chat'
     | '/doctors'
@@ -205,6 +235,7 @@ export interface FileRouteTypes {
     | '/vibes'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/_authenticated/clinic'
     | '/api/chat'
     | '/tutorials/$slug'
     | '/.mcp/invoke-tool/$tool'
@@ -212,6 +243,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   BuddyRoute: typeof BuddyRoute
   ChatRoute: typeof ChatRoute
   DoctorsRoute: typeof DoctorsRoute
@@ -293,6 +326,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BuddyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -313,6 +360,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/chat'
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/clinic': {
+      id: '/_authenticated/clinic'
+      path: '/clinic'
+      fullPath: '/clinic'
+      preLoaderRoute: typeof AuthenticatedClinicRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/.well-known/oauth-protected-resource': {
       id: '/.well-known/oauth-protected-resource'
@@ -338,8 +392,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedClinicRoute: typeof AuthenticatedClinicRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedClinicRoute: AuthenticatedClinicRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   BuddyRoute: BuddyRoute,
   ChatRoute: ChatRoute,
   DoctorsRoute: DoctorsRoute,
