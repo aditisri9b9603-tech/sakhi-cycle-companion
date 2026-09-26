@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          appt_date: string
+          city: string
+          clinic: string
+          contact: string
+          created_at: string
+          doctor_id: string
+          doctor_name: string
+          doctor_note: string
+          doctor_phone: string
+          id: string
+          mode: string
+          patient_id: string
+          patient_name: string
+          reason: string
+          slot: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          appt_date: string
+          city: string
+          clinic: string
+          contact?: string
+          created_at?: string
+          doctor_id: string
+          doctor_name: string
+          doctor_note?: string
+          doctor_phone?: string
+          id?: string
+          mode?: string
+          patient_id: string
+          patient_name?: string
+          reason?: string
+          slot: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          appt_date?: string
+          city?: string
+          clinic?: string
+          contact?: string
+          created_at?: string
+          doctor_id?: string
+          doctor_name?: string
+          doctor_note?: string
+          doctor_phone?: string
+          id?: string
+          mode?: string
+          patient_id?: string
+          patient_name?: string
+          reason?: string
+          slot?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
@@ -80,6 +140,24 @@ export type Database = {
           updated_at?: string
           user_id?: string
           water_cups?: number | null
+        }
+        Relationships: []
+      }
+      doctor_accounts: {
+        Row: {
+          created_at: string
+          doctor_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          doctor_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          doctor_id?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -181,6 +259,7 @@ export type Database = {
     }
     Functions: {
       increment_post_hearts: { Args: { _post_id: string }; Returns: undefined }
+      my_doctor_id: { Args: never; Returns: string }
     }
     Enums: {
       [_ in never]: never
