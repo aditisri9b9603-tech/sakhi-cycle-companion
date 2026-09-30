@@ -1,24 +1,39 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Activity, Heart, MessageCircle, Users, UserRound, Sparkles, Apple, Play, Stethoscope, Music, Menu, X } from "lucide-react";
+import { Activity, Heart, MessageCircle, Users, UserRound, Sparkles, Apple, Play, Stethoscope, Music, Menu, X, Globe } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { LANGS, useLang, type Lang } from "@/lib/i18n";
 
 const NAV = [
-  { to: "/", label: "Home", icon: Heart },
-  { to: "/track", label: "Cycle", icon: Activity },
-  { to: "/chat", label: "Sakhi AI", icon: MessageCircle },
-  { to: "/lifestyle", label: "Lifestyle", icon: Apple },
-  { to: "/products", label: "Products", icon: Play },
-  { to: "/doctors", label: "Doctors", icon: Stethoscope },
-  { to: "/forum", label: "Forum", icon: Users },
-  { to: "/buddy", label: "Buddy", icon: UserRound },
-  { to: "/vibes", label: "Vibes", icon: Music },
+  { to: "/", key: "home", icon: Heart },
+  { to: "/track", key: "cycle", icon: Activity },
+  { to: "/chat", key: "ai", icon: MessageCircle },
+  { to: "/lifestyle", key: "lifestyle", icon: Apple },
+  { to: "/products", key: "products", icon: Play },
+  { to: "/doctors", key: "doctors", icon: Stethoscope },
+  { to: "/forum", key: "forum", icon: Users },
+  { to: "/buddy", key: "buddy", icon: UserRound },
+  { to: "/vibes", key: "vibes", icon: Music },
 ] as const;
 
-const BOTTOM_PRIMARY = NAV.filter((n) => ["/", "/track", "/chat", "/buddy"].includes(n.to));
+const BOTTOM_PRIMARY = NAV.filter((n) => ["/", "/track", "/chat", "/doctors"].includes(n.to));
+
+function LangPicker({ className = "" }: { className?: string }) {
+  const { lang, setLang, t } = useLang();
+  return (
+    <label className={`inline-flex items-center gap-1.5 rounded-full glass px-3 py-2 text-sm ${className}`}>
+      <Globe className="h-4 w-4 text-primary" />
+      <span className="sr-only">{t("language")}</span>
+      <select value={lang} onChange={(e) => setLang(e.target.value as Lang)} className="bg-transparent outline-none text-sm cursor-pointer" aria-label={t("language")}>
+        {LANGS.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
+      </select>
+    </label>
+  );
+}
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [menuOpen, setMenuOpen] = useState(false);
+  const { t } = useLang();
 
   return (
     <div className="relative min-h-screen">
@@ -37,48 +52,49 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
             <div className="leading-tight min-w-0">
               <div className="font-display text-lg sm:text-xl gradient-text truncate">Sakhi Cycle</div>
-              <div className="text-[9px] sm:text-[10px] uppercase tracking-widest text-muted-foreground truncate">your gentle companion</div>
+              <div className="text-[9px] sm:text-[10px] uppercase tracking-widest text-muted-foreground truncate">{t("tagline")}</div>
             </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1">
-            {NAV.map(({ to, label, icon: Icon }) => {
+          <nav className="hidden xl:flex items-center gap-1">
+            {NAV.map(({ to, key, icon: Icon }) => {
               const active = pathname === to || (to !== "/" && pathname.startsWith(to));
               return (
-                <Link
-                  key={to}
-                  to={to}
+                <Link key={to} to={to} aria-current={active ? "page" : undefined}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-all ${
                     active ? "bg-primary text-primary-foreground shadow-soft" : "text-foreground/70 hover:text-foreground hover:bg-secondary"
-                  }`}
-                >
+                  }`}>
                   <Icon className="h-4 w-4" />
-                  {label}
+                  {t(key)}
                 </Link>
               );
             })}
           </nav>
 
-          <button onClick={() => setMenuOpen(true)} className="lg:hidden h-10 w-10 shrink-0 rounded-full glass flex items-center justify-center" aria-label="Open menu">
-            <Menu className="h-5 w-5" />
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <LangPicker className="hidden sm:inline-flex" />
+            <button onClick={() => setMenuOpen(true)} className="xl:hidden h-10 w-10 shrink-0 rounded-full glass flex items-center justify-center" aria-label={t("menu")}>
+              <Menu className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </header>
 
       {menuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-black/30 backdrop-blur-sm" onClick={() => setMenuOpen(false)}>
+        <div className="xl:hidden fixed inset-0 z-50 bg-foreground/30 backdrop-blur-sm" onClick={() => setMenuOpen(false)}>
           <div className="absolute right-0 top-0 bottom-0 w-[80%] max-w-xs glass-strong p-5 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
-              <div className="font-display text-xl gradient-text">Menu</div>
-              <button onClick={() => setMenuOpen(false)} className="h-9 w-9 rounded-full glass flex items-center justify-center"><X className="h-4 w-4" /></button>
+            <div className="flex items-center justify-between mb-4">
+              <div className="font-display text-xl gradient-text">{t("menu")}</div>
+              <button onClick={() => setMenuOpen(false)} aria-label="Close" className="h-9 w-9 rounded-full glass flex items-center justify-center"><X className="h-4 w-4" /></button>
             </div>
+            <LangPicker className="w-full mb-4" />
             <nav className="space-y-1">
-              {NAV.map(({ to, label, icon: Icon }) => {
+              {NAV.map(({ to, key, icon: Icon }) => {
                 const active = pathname === to || (to !== "/" && pathname.startsWith(to));
                 return (
                   <Link key={to} to={to} onClick={() => setMenuOpen(false)}
                     className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium ${active ? "bg-primary text-primary-foreground shadow-soft" : "hover:bg-secondary"}`}>
-                    <Icon className="h-4 w-4" />{label}
+                    <Icon className="h-4 w-4" />{t(key)}
                   </Link>
                 );
               })}
@@ -87,25 +103,25 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       )}
 
-      <main className="relative mx-auto max-w-7xl px-3 sm:px-4 md:px-6 py-6 md:py-8 pb-32 lg:pb-12">{children}</main>
+      <main className="relative mx-auto max-w-7xl px-3 sm:px-4 md:px-6 py-6 md:py-8 pb-32 xl:pb-12">{children}</main>
 
-      <nav className="lg:hidden fixed bottom-3 left-3 right-3 z-40 glass-strong rounded-3xl px-2 py-2 safe-bottom">
+      <nav className="xl:hidden fixed bottom-3 left-3 right-3 z-40 glass-strong rounded-3xl px-2 py-2 safe-bottom">
         <div className="flex items-center justify-around gap-1">
-          {BOTTOM_PRIMARY.map(({ to, label, icon: Icon }) => {
+          {BOTTOM_PRIMARY.map(({ to, key, icon: Icon }) => {
             const active = pathname === to || (to !== "/" && pathname.startsWith(to));
             return (
               <Link key={to} to={to}
-                className={`flex flex-col items-center justify-center flex-1 min-h-[52px] px-2 py-1.5 rounded-2xl text-[10px] font-medium transition ${
+                className={`flex flex-col items-center justify-center flex-1 min-h-[52px] px-1 py-1.5 rounded-2xl text-[10px] font-medium transition ${
                   active ? "bg-primary text-primary-foreground shadow-soft" : "text-foreground/65"
                 }`}>
                 <Icon className="h-5 w-5 mb-0.5" />
-                <span className="leading-none">{label}</span>
+                <span className="leading-none truncate max-w-full">{t(key)}</span>
               </Link>
             );
           })}
-          <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center justify-center flex-1 min-h-[52px] px-2 py-1.5 rounded-2xl text-[10px] font-medium text-foreground/65">
+          <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center justify-center flex-1 min-h-[52px] px-1 py-1.5 rounded-2xl text-[10px] font-medium text-foreground/65">
             <Menu className="h-5 w-5 mb-0.5" />
-            <span className="leading-none">More</span>
+            <span className="leading-none">{t("more")}</span>
           </button>
         </div>
       </nav>
